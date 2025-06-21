@@ -1,0 +1,6 @@
+.header-container {
+    margin-bottom: 2rem;
+    .header-title {
+        text-align: center;
+    }
+}
