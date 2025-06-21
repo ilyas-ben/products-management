@@ -5,8 +5,9 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
 import "./Header.css";
+import { Link } from "react-router-dom";
 
 const logoutUser = () => {
   // Implement logout logic here
@@ -23,10 +24,18 @@ export const Header = () => {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            href="/"
           >
-            <MenuIcon />
+           
+              <HomeIcon />  
+            
           </IconButton>
-          <Typography variant="h6" component="div" className="header-title" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            component="div"
+            className="header-title"
+            sx={{ flexGrow: 1 }}
+          >
             Product Management
           </Typography>
           <Button color="inherit">Login</Button>

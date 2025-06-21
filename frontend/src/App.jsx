@@ -1,10 +1,9 @@
+import { Container } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import ProductDetails from "./components/product/ProductDetails";
-import { ProductList } from "./components/product/ProductList";
 import { Header } from "./components/header/Header";
-import { Container } from "@mui/material";
 import ProductForm from "./components/product/productForm/ProductForm";
+import { ProductList } from "./components/product/productList/ProductList";
 
 function App() {
   return (

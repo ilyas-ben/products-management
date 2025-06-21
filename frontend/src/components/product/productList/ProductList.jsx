@@ -14,13 +14,18 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getProducts, saveProduct } from "../../service/product-api";
+import { deleteProduct, getProducts, saveProduct } from "../../../service/product-api";
+import Modal from "../../shared/Modal";
+import Toast from "../../shared/Toast";
 
-export const ProductList = () => {
+const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [filterText, setFilterText] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [toast, setToast] = useState({ open: false, message: '', severity: 'success' });
 
   useEffect(() => {
     async function fetchProducts() {
@@ -40,19 +45,38 @@ export const ProductList = () => {
     saveProduct(product);
   };
 
-  const handleClickOnDeleteIcon = (productIdToDelete) => {
-    confirm(
-      `Are you sure you want to delete the product with ID: ${productIdToDelete}?`
-    );
+  const handleClickOnDeleteIcon = (productId) => {
+    setSelectedProductId(productId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleDeleteProduct = async (id) => {
+    const result = await deleteProduct(id);
+    if (result && result.error) {
+      setToast({ open: true, message: result.error, severity: 'error' });
+    } else {
+      setToast({ open: true, message: 'Product deleted successfully!', severity: 'success' });
+      setProducts(products.filter((p) => p.id !== id));
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedProductId) {
+      handleDeleteProduct(selectedProductId);
+    }
+    handleCloseModal();
   };
 
   return (
     <TableContainer>
       <Box display="flex" justifyContent="flex-start">
-        <Button variant="contained" >
-   
-          <Link to="/product-form" className="addButton" >
-          New Product
+        <Button variant="contained">
+          <Link to="/product-form" className="addButton">
+            New Product
           </Link>
         </Button>
       </Box>
@@ -65,7 +89,7 @@ export const ProductList = () => {
           onChange={handleFilterChange}
         ></TextField>
       </Box>
-      <hr></hr>
+
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -121,6 +145,23 @@ export const ProductList = () => {
           )}
         </TableBody>
       </Table>
+      <Modal
+        isModalOpen={isModalOpen}
+        closeModal={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title="Delete Product?"
+        contentText="Are you sure you want to delete this product?"
+        confirmText="Yes"
+        cancelText="No"
+      />
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        severity={toast.severity}
+        onClose={() => setToast({ ...toast, open: false })}
+      />
     </TableContainer>
   );
 };
+
+export default ProductList;
