@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { saveProduct } from "../../../service/product-api";
 import "./ProductForm.css";
-import Toast from '../../shared/Toast';
+import Toast from "../../shared/Toast";
 
- const ProductForm = (props) => {
+const ProductForm = (props) => {
   ProductForm.propTypes = {
     product: PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -14,7 +14,7 @@ import Toast from '../../shared/Toast';
   };
 
   const [product, setProduct] = useState({});
-  const [toast, setToast] = useState({ open: false, message: '', severity: 'success' });
+  const [toast, setToast] = useState({});
 
   useEffect(() => {
     if (props.product) {
@@ -26,7 +26,7 @@ import Toast from '../../shared/Toast';
     const { name, value } = e.target;
     setProduct((prev) => ({
       ...prev,
-      [name]: name === 'price' ? Number(value) : value,
+      [name]: name === "price" ? Number(value) : value,
     }));
   };
 
@@ -34,9 +34,13 @@ import Toast from '../../shared/Toast';
     event.preventDefault();
     const result = await saveProduct(product);
     if (result?.error) {
-      setToast({ open: true, message: result.error, severity: 'error' });
+      setToast({ open: true, message: result.error, severity: "error" });
     } else {
-      setToast({ open: true, message: 'Product saved successfully!', severity: 'success' });
+      setToast({
+        open: true,
+        message: "Product saved successfully!",
+        severity: "success",
+      });
     }
   };
 
@@ -90,6 +94,6 @@ import Toast from '../../shared/Toast';
       />
     </Grid>
   );
-}
+};
 
 export default ProductForm;
