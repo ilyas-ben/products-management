@@ -1,13 +1,11 @@
-import React from "react";
+import HomeIcon from "@mui/icons-material/Home";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import HomeIcon from "@mui/icons-material/Home";
+import IconButton from "@mui/material/IconButton";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import "./Header.css";
-import { Link } from "react-router-dom";
 
 const logoutUser = () => {
   // Implement logout logic here
@@ -26,9 +24,7 @@ export const Header = () => {
             sx={{ mr: 2 }}
             href="/"
           >
-           
-              <HomeIcon />  
-            
+            <HomeIcon />
           </IconButton>
           <Typography
             variant="h6"

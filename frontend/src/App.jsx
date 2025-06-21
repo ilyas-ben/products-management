@@ -6,6 +6,11 @@ import ProductForm from "./components/product/productForm/ProductForm";
 import ProductList from "./components/product/productList/ProductList";
 
 function App() {
+  const exampleProduct = {
+    id: 1,
+    name: "Sample Product",
+    price: 99.99,
+  };
   return (
     <>
       <Header />
@@ -13,7 +18,10 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<ProductList />} />
-            <Route path="/product-form" element={<ProductForm />} />
+            <Route
+              path="/product-form"
+              element={<ProductForm product={exampleProduct} />}
+            />
           </Routes>
         </BrowserRouter>
       </Container>

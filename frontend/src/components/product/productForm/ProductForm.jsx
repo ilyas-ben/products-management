@@ -1,11 +1,12 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Box, Button, Grid, TextField, Typography, Card } from "@mui/material";
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { saveProduct } from "../../../service/product-api";
-import "./ProductForm.css";
 import Toast from "../../shared/Toast";
+import "./ProductForm.css";
+import { useLocation } from "react-router-dom";
 
-const ProductForm = (props) => {
+const ProductForm = () => {
   ProductForm.propTypes = {
     product: PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -13,14 +14,15 @@ const ProductForm = (props) => {
     }).isRequired,
   };
 
+  const { state } = useLocation();
   const [product, setProduct] = useState({});
   const [toast, setToast] = useState({});
 
   useEffect(() => {
-    if (props.product) {
-      setProduct(props.product);
+    if (state?.product) {
+      setProduct(state?.product);
     }
-  }, [props.product]);
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -45,12 +47,14 @@ const ProductForm = (props) => {
   };
 
   return (
-    <Grid container component="div" className="product-form-container">
+    <Card container component="div" className="product-form-container">
       <Grid item className="product-form-header">
-        <Box sx={{ fontSize: "32px" }}> New Product</Box>
+        <Typography variant="h4">
+          {state?.product ? ` ${state?.product.name}` : "New Product"}
+        </Typography>
       </Grid>
       <form onSubmit={handleSubmit} className="product-form">
-        <Box item xs={6} component="div" className="product-form-input">
+        <Grid item component="div" className="product-form-input">
           <TextField
             required
             id="product-name"
@@ -61,12 +65,12 @@ const ProductForm = (props) => {
             onChange={handleInputChange}
             fullWidth
           />
-        </Box>
-        <Box
-          xs={6}
+        </Grid>
+        <Grid
+          item
           component="div"
           className="product-form-input"
-          sx={{ width: "100%" }}
+          
         >
           <TextField
             label="Price"
@@ -79,7 +83,7 @@ const ProductForm = (props) => {
             required
             fullWidth
           />
-        </Box>
+        </Grid>
         <Box className="submit-button-container">
           <Button type="submit" variant="contained" color="success">
             Save Product
@@ -92,7 +96,7 @@ const ProductForm = (props) => {
         severity={toast.severity}
         onClose={() => setToast({ ...toast, open: false })}
       />
-    </Grid>
+    </Card>
   );
 };
 

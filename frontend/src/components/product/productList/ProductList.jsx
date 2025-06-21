@@ -13,8 +13,12 @@ import {
   TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { deleteProduct, getProducts, saveProduct } from "../../../service/product-api";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  deleteProduct,
+  getProducts,
+  saveProduct,
+} from "../../../service/product-api";
 import Modal from "../../shared/Modal";
 import Toast from "../../shared/Toast";
 
@@ -25,7 +29,11 @@ const ProductList = () => {
   const [filterText, setFilterText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
-  const [toast, setToast] = useState({ open: false, message: '', severity: 'success' });
+  const [toast, setToast] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   useEffect(() => {
     async function fetchProducts() {
@@ -41,10 +49,6 @@ const ProductList = () => {
     setPage(0);
   };
 
-  const handleClickOnEditIcon = (product) => {
-    saveProduct(product);
-  };
-
   const handleClickOnDeleteIcon = (productId) => {
     setSelectedProductId(productId);
     setIsModalOpen(true);
@@ -56,10 +60,14 @@ const ProductList = () => {
 
   const handleDeleteProduct = async (id) => {
     const result = await deleteProduct(id);
-    if (result && result.error) {
-      setToast({ open: true, message: result.error, severity: 'error' });
+    if (result?.error) {
+      setToast({ open: true, message: result.error, severity: "error" });
     } else {
-      setToast({ open: true, message: 'Product deleted successfully!', severity: 'success' });
+      setToast({
+        open: true,
+        message: "Product deleted successfully!",
+        severity: "success",
+      });
       setProducts(products.filter((p) => p.id !== id));
     }
   };
@@ -69,6 +77,11 @@ const ProductList = () => {
       handleDeleteProduct(selectedProductId);
     }
     handleCloseModal();
+  };
+
+  const navigate = useNavigate();
+  const handleClickOnEditIcon = (product) => {
+    navigate("/product-form", { state: { product } });
   };
 
   return (
