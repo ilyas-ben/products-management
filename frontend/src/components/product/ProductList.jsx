@@ -1,24 +1,26 @@
-import { useEffect, useState } from "react";
-import { getProducts } from "../../service/product-api";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import {
   Box,
+  Button,
+  IconButton,
   Table,
+  TableBody,
+  TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  TableBody,
-  TableCell,
-  TablePagination,
-  Button,
   TextField,
-  IconButton,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getProducts, saveProduct } from "../../service/product-api";
 
 export const ProductList = () => {
   const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [filterText, setFilterText] = useState("");
 
   useEffect(() => {
     async function fetchProducts() {
@@ -28,12 +30,30 @@ export const ProductList = () => {
     fetchProducts();
   }, []);
 
+  const handleFilterChange = (event) => {
+    const value = event.target.value;
+    setFilterText(value);
+    setPage(0);
+  };
+
+  const handleClickOnEditIcon = (product) => {
+    saveProduct(product);
+  };
+
+  const handleClickOnDeleteIcon = (productIdToDelete) => {
+    confirm(
+      `Are you sure you want to delete the product with ID: ${productIdToDelete}?`
+    );
+  };
+
   return (
     <TableContainer>
       <Box display="flex" justifyContent="flex-start">
-        <Button variant="contained" onClick={handleClickOpen}>
-          {" "}
-          Add New
+        <Button variant="contained" >
+   
+          <Link to="/product-form" className="addButton" >
+          New Product
+          </Link>
         </Button>
       </Box>
 
@@ -50,61 +70,44 @@ export const ProductList = () => {
         <TableHead>
           <TableRow>
             <TableCell sx={{ fontWeight: "bold" }} scope="col">
-              #
-            </TableCell>
-            <TableCell sx={{ fontWeight: "bold" }} scope="col">
               Product Name
             </TableCell>
             <TableCell sx={{ fontWeight: "bold" }} scope="col">
-              Description
+              Price
             </TableCell>
-            <TableCell sx={{ fontWeight: "bold" }} scope="col">
-              Category
+
+            <TableCell sx={{ fontWeight: "bold" }} align="center" scope="col">
+              Actions
             </TableCell>
-            <TableCell sx={{ fontWeight: "bold" }} scope="col">
-              Date Added
-            </TableCell>
-            <TableCell scope="col"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {filteredProducts !== null ? (
-            filteredProducts
+          {products !== null ? (
+            products
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((product, index) => (
                 <TableRow
                   key={product.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell sx={{ fontSize: "1.1rem" }} scope="row">
-                    {page * rowsPerPage + index + 1}
+                  <TableCell sx={{ fontSize: "1.1rem" }}>
+                    {product.name}
                   </TableCell>
 
                   <TableCell sx={{ fontSize: "1.1rem" }}>
-                    <Link to={`/product`} state={{ currentProduct: product }}>
-                      {product.title}
-                    </Link>
+                    {product.price}
                   </TableCell>
 
-                  <TableCell sx={{ fontSize: "1.1rem" }}>
-                    {product.summary}
-                  </TableCell>
-                  <TableCell sx={{ fontSize: "1.1rem" }}>
-                    {product.category ? product.category.title : ""}
-                  </TableCell>
-                  <TableCell sx={{ fontSize: "1.1rem" }}>
-                    {new Date(product.createdAt).toLocaleDateString()}
-                  </TableCell>
                   <TableCell align="center">
                     <IconButton
                       color="secondary"
-                      onClick={() => handleConfirmOpen(product.id)}
+                      onClick={() => handleClickOnDeleteIcon(product.id)}
                     >
                       <DeleteIcon />
                     </IconButton>
                     <IconButton
                       color="secondary"
-                      onClick={() => handleClickOpenEdit(product)}
+                      onClick={() => handleClickOnEditIcon(product)}
                     >
                       <EditIcon />
                     </IconButton>
@@ -118,7 +121,6 @@ export const ProductList = () => {
           )}
         </TableBody>
       </Table>
-   
     </TableContainer>
   );
 };
