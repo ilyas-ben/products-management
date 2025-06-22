@@ -14,11 +14,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  deleteProduct,
-  getProducts,
-  saveProduct,
-} from "../../../service/product-api";
+import { deleteProduct, getProducts } from "../../../service/product-api";
 import Modal from "../../shared/Modal";
 import Toast from "../../shared/Toast";
 

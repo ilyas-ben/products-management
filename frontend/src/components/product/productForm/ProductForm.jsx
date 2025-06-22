@@ -1,10 +1,10 @@
-import { Box, Button, Grid, TextField, Typography, Card } from "@mui/material";
+import { Box, Button, Card, Grid, TextField, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { saveProduct } from "../../../service/product-api";
 import Toast from "../../shared/Toast";
 import "./ProductForm.css";
-import { useLocation } from "react-router-dom";
 
 const ProductForm = () => {
   ProductForm.propTypes = {
@@ -66,12 +66,7 @@ const ProductForm = () => {
             fullWidth
           />
         </Grid>
-        <Grid
-          item
-          component="div"
-          className="product-form-input"
-          
-        >
+        <Grid item component="div" className="product-form-input">
           <TextField
             label="Price"
             id="product-price"
