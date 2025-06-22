@@ -3,19 +3,12 @@
 A full-stack web application for managing products, built with Spring Boot (Java) for the backend and React (Vite) for the frontend.
 
 ## Technical stack
+
 - **Backend:** Spring Boot (Java), Spring Data JPA, MYSQL, Maven, **Mockito**
-- **Frontend:** React (Vite), JSX, Axios, *Material UI*
+- **Frontend:** React (Vite), JSX, Axios, **Material UI**
 - **API:** RESTful endpoints with JSON
-- **Build Tools:** Maven (backend), npm (frontend)
 - **Testing:** JUnit (backend), React Testing Library (frontend)
-- **Containerization**: 
-
-## Features
-
-- CRUD for products
-- 
-- React Router for navigation.
-- Modular code structure
+- **Containerization**: Docker Compose
 
 ## Project Structure
 
@@ -33,14 +26,25 @@ products-management/
 
 ### Prerequisites
 
+- Docker Desktop and Docker Compose
+
+or ( If you want to run the project manually )
+
 - Java 17+ and Maven (for backend)
 - Node.js 18+ and npm (for frontend)
 
 ---
 
+## Using Docker
+
+position yourself at the root folder and run "docker-compose up --build"
+
+## Manually
+
 ### Backend Setup
 
 1. Navigate to the backend directory:
+
    ```powershell
    cd backend
    ```
@@ -56,11 +60,13 @@ products-management/
 ### Frontend Setup
 
 1. Navigate to the frontend directory:
+
    ```powershell
    cd frontend
    ```
 
 2. Install dependencies:
+
    ```powershell
    npm install
    ```
@@ -75,16 +81,14 @@ products-management/
 
 ## API Endpoints
 
-- `GET /api/products` - List all products
-- `POST /api/products` - Add a new product
-- `PUT /api/products/{id}` - Update a product
-- `DELETE /api/products/{id}` - Delete a product
+- `GET /products` - List all products
+- `POST /products` - Add a new product
+- `PUT /products/{id}` - Update a product
+- `DELETE /products/{id}` - Delete a product
 
 ## Folder Overview
 
 - `backend/src/main/java/com/ilyas/productmanagement/` - Java source code
-- `frontend/src/` - React components, models, and services
-
-## License
-
-This project is licensed under the MIT License.
+- `frontend/src/components/` - Contains UI components such as `ProductList` and `ProductForm`
+- `frontend/src/components/shared/` - Shared components like generic modals and toast notifications
+- `frontend/src/service/` - Handles REST API calls using Axios
