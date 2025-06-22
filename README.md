@@ -3,7 +3,7 @@
 A full-stack web application for managing products, built with Spring Boot (Java) for the backend and React (Vite) for the frontend.
 
 ## Technical stack
-- **Backend:** Spring Boot (Java), Spring Data JPA, MYSQL, Maven
+- **Backend:** Spring Boot (Java), Spring Data JPA, MYSQL, Maven, **Mockito**
 - **Frontend:** React (Vite), JSX, Axios, *Material UI*
 - **API:** RESTful endpoints with JSON
 - **Build Tools:** Maven (backend), npm (frontend)
