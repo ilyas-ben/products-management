@@ -1,0 +1,52 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: products-db
+    environment:
+      MYSQL_DATABASE: products
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3308:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend:
+    build:
+      context: ./backend
+    container_name: products-backend
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/products?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      - "8080:8080"
+
+  flyway:
+    image: flyway/flyway:10
+    container_name: flyway-migrations
+    depends_on:
+      - db
+      - backend
+    volumes:
+      - ./backend/src/main/resources/db/migration:/flyway/sql
+    command: -url="jdbc:mysql://db:3306/products?allowPublicKeyRetrieval=true&useSSL=false"  -user=user -password=password  -baselineOnMigrate=true  migrate
+    environment:
+      FLYWAY_PLACEHOLDERS_USER: user
+      FLYWAY_PLACEHOLDERS_PASSWORD: password
+
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: products-frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+
+volumes:
+  db_data:
